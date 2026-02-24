@@ -55,7 +55,7 @@ func (site *Site) greenShare(powerFrom float64, powerTo float64) float64 {
 func (site *Site) effectivePrice(greenShare float64) *float64 {
 	if grid, err := tariff.Now(site.GetTariff(api.TariffUsageGrid)); err == nil {
 		var feedin float64
-		if site.solarCostIncluded {
+		if site.tariffs.SolarCostIncluded {
 			if v, err := tariff.Now(site.GetTariff(api.TariffUsageFeedIn)); err == nil {
 				feedin = v
 			}

@@ -10,6 +10,7 @@ import (
 type Tariffs struct {
 	Currency                          currency.Unit
 	Grid, FeedIn, Co2, Planner, Solar api.Tariff
+	SolarCostIncluded                 bool // include solar opportunity cost (feed-in tariff) in effective price
 }
 
 // At returns the rate at the given time

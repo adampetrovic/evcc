@@ -300,7 +300,7 @@ func (site *Site) GetTariff(tariff api.TariffUsage) api.Tariff {
 func (site *Site) GetSolarCostIncluded() bool {
 	site.RLock()
 	defer site.RUnlock()
-	return site.solarCostIncluded
+	return site.tariffs.SolarCostIncluded
 }
 
 // SetSolarCostIncluded sets whether solar opportunity cost is included in effective price
@@ -310,9 +310,8 @@ func (site *Site) SetSolarCostIncluded(val bool) error {
 	site.Lock()
 	defer site.Unlock()
 
-	if site.solarCostIncluded != val {
-		site.solarCostIncluded = val
-		settings.SetBool(keys.SolarCostIncluded, val)
+	if site.tariffs.SolarCostIncluded != val {
+		site.tariffs.SolarCostIncluded = val
 		site.publish(keys.SolarCostIncluded, val)
 	}
 

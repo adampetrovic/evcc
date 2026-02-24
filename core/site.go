@@ -80,9 +80,6 @@ type Site struct {
 	batteryDischargeControl bool     // prevent battery discharge for fast and planned charging
 	batteryGridChargeLimit  *float64 // grid charging limit
 
-	// tariff settings
-	solarCostIncluded bool // include solar opportunity cost (feed-in tariff) in effective price
-
 	loadpoints  []*Loadpoint             // Loadpoints
 	tariffs     *tariff.Tariffs          // Tariffs
 	coordinator *coordinator.Coordinator // Vehicles
@@ -243,12 +240,11 @@ func (site *Site) Boot(log *util.Logger, loadpoints []*Loadpoint, tariffs *tarif
 // NewSite creates a Site with sane defaults
 func NewSite() *Site {
 	site := &Site{
-		log:               util.NewLogger("site"),
-		Voltage:           230, // V
-		solarCostIncluded: true,
-		pvEnergy:          make(map[string]*meterEnergy),
-		fcstEnergy:        &meterEnergy{clock: clock.New()},
-		householdEnergy:   &meterEnergy{clock: clock.New()},
+		log:             util.NewLogger("site"),
+		Voltage:         230, // V
+		pvEnergy:        make(map[string]*meterEnergy),
+		fcstEnergy:      &meterEnergy{clock: clock.New()},
+		householdEnergy: &meterEnergy{clock: clock.New()},
 	}
 
 	return site
@@ -311,11 +307,6 @@ func (site *Site) restoreSettings() error {
 	}
 	if v, err := settings.Float(keys.BatteryGridChargeLimit); err == nil {
 		if err := site.SetBatteryGridChargeLimit(&v); err != nil && !errors.Is(err, ErrBatteryControlNotAvailable) {
-			return err
-		}
-	}
-	if v, err := settings.Bool(keys.SolarCostIncluded); err == nil {
-		if err := site.SetSolarCostIncluded(v); err != nil {
 			return err
 		}
 	}
@@ -1025,7 +1016,7 @@ func (site *Site) prepare() {
 	site.publish(keys.BatteryMode, site.batteryMode)
 	site.publish(keys.BatteryDischargeControl, site.batteryDischargeControl)
 	site.publish(keys.ResidualPower, site.GetResidualPower())
-	site.publish(keys.SolarCostIncluded, site.solarCostIncluded)
+	site.publish(keys.SolarCostIncluded, site.tariffs.SolarCostIncluded)
 	site.publish(keys.SmartCostAvailable, site.isDynamicTariff(api.TariffUsagePlanner))
 	site.publish(keys.SmartFeedInPriorityAvailable, site.isDynamicTariff(api.TariffUsageFeedIn))
 

@@ -914,7 +914,8 @@ func configureSolarTariff(conf []config.Typed, t *api.Tariff) error {
 
 func configureTariffs(conf *globalconfig.Tariffs) (*tariff.Tariffs, error) {
 	tariffs := tariff.Tariffs{
-		Currency: currency.EUR,
+		Currency:          currency.EUR,
+		SolarCostIncluded: conf.SolarCostIncluded == nil || *conf.SolarCostIncluded,
 	}
 
 	// migrate settings
