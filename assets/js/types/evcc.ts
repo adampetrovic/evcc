@@ -81,6 +81,7 @@ export interface State {
   tariffFeedIn?: number;
   tariffCo2?: number;
   tariffSolar?: number;
+  solarCostIncluded?: boolean;
   mqtt?: MqttConfig;
   influx?: InfluxConfig;
   hems?: Hems;

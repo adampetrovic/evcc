@@ -635,6 +635,10 @@
     },
     "tariffs": {
       "description": "Define your energy tariffs to calculate the costs of your charging sessions.",
+      "solarCostIncluded": {
+        "description": "When enabled, solar energy used for charging is valued at the feed-in tariff rate (opportunity cost). When disabled, solar energy is treated as free.",
+        "label": "Include solar opportunity cost in session pricing"
+      },
       "title": "Tariffs"
     },
     "telemetry": {
