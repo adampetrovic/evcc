@@ -67,6 +67,11 @@ type API interface {
 	// GetTariff returns the respective tariff
 	GetTariff(api.TariffUsage) api.Tariff
 
+	// GetSolarCostIncluded returns whether solar opportunity cost is included in effective price
+	GetSolarCostIncluded() bool
+	// SetSolarCostIncluded sets whether solar opportunity cost is included in effective price
+	SetSolarCostIncluded(bool) error
+
 	//
 	// battery control
 	//

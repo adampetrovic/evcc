@@ -50,11 +50,15 @@ func (site *Site) greenShare(powerFrom float64, powerTo float64) float64 {
 }
 
 // effectivePrice calculates the real energy price based on self-produced and grid-imported energy.
+// When solarCostIncluded is true, solar energy is priced at the feed-in tariff (opportunity cost).
+// When solarCostIncluded is false, solar energy is priced at zero.
 func (site *Site) effectivePrice(greenShare float64) *float64 {
 	if grid, err := tariff.Now(site.GetTariff(api.TariffUsageGrid)); err == nil {
-		feedin, err := tariff.Now(site.GetTariff(api.TariffUsageFeedIn))
-		if err != nil {
-			feedin = 0
+		var feedin float64
+		if site.solarCostIncluded {
+			if v, err := tariff.Now(site.GetTariff(api.TariffUsageFeedIn)); err == nil {
+				feedin = v
+			}
 		}
 		effPrice := grid*(1-greenShare) + feedin*greenShare
 		return &effPrice

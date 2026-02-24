@@ -53,6 +53,9 @@ const (
 	// external battery control
 	BatteryModeExternal = "batteryModeExternal"
 
+	// tariff settings
+	SolarCostIncluded = "solarCostIncluded" // include solar opportunity cost in session pricing
+
 	// smart charging
 	SmartCostAvailable           = "smartCostAvailable"           // smart cost available
 	SmartFeedInPriorityAvailable = "smartFeedInPriorityAvailable" // smart feed-in priority available

@@ -296,6 +296,29 @@ func (site *Site) GetTariff(tariff api.TariffUsage) api.Tariff {
 	return site.tariffs.Get(tariff)
 }
 
+// GetSolarCostIncluded returns whether solar opportunity cost is included in effective price
+func (site *Site) GetSolarCostIncluded() bool {
+	site.RLock()
+	defer site.RUnlock()
+	return site.solarCostIncluded
+}
+
+// SetSolarCostIncluded sets whether solar opportunity cost is included in effective price
+func (site *Site) SetSolarCostIncluded(val bool) error {
+	site.log.DEBUG.Println("set solar cost included:", val)
+
+	site.Lock()
+	defer site.Unlock()
+
+	if site.solarCostIncluded != val {
+		site.solarCostIncluded = val
+		settings.SetBool(keys.SolarCostIncluded, val)
+		site.publish(keys.SolarCostIncluded, val)
+	}
+
+	return nil
+}
+
 // GetBatteryDischargeControl returns the battery control mode (no discharge only)
 func (site *Site) GetBatteryDischargeControl() bool {
 	site.RLock()
